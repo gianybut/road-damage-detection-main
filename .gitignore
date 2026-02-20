@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+env/
+.env
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+# YOLOv5 Training
+yolov5/
+runs/
+backend/yolov5/
+backend/runs/
+backend/data/images/
+backend/data/labels/
+
+# Models (large files - exclude weights)
+*.pt
+!backend/models/.gitkeep
+
+# Database
+*.db
+*.sqlite3
+
+# Uploads directory
+uploads/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+.AppleDouble
+.LSOverride
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node
+node_modules/
+npm-debug.log*
+.expo/
+dist/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# Environment files
+.env.local
+.env.*.local

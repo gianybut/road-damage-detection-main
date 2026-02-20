@@ -1,0 +1,39 @@
+# Road Damage Detection Backend - Requirements
+# Compatible with Python 3.9+ (Windows, macOS, Linux)
+# For Google Colab: Most packages pre-installed, just run: pip install ultralytics
+
+# Web Framework
+flask==3.0.0
+flask-cors==4.0.0
+
+# YOLOv5 Training & Inference (ultralytics is recommended over cloning)
+ultralytics==8.1.0
+torch>=2.0.0
+torchvision>=0.15.0
+pytorch-lightning>=2.0.0
+
+# Image Processing
+Pillow==10.2.0
+opencv-python-headless==4.9.0.80
+numpy>=1.24.0
+scipy>=1.10.0
+
+# Database
+flask-sqlalchemy==3.1.1
+
+# Data and utilities
+python-dotenv==1.0.0
+requests==2.31.0
+pyyaml==6.0.1
+tqdm>=4.65.0
+matplotlib>=3.7.0
+pandas>=2.0.0
+
+# Dataset downloading (optional)
+kaggle>=1.5.13
+gdown>=4.7.0
+
+# Development (optional)
+ipython>=8.0.0
+ipykernel>=6.20.0
+ipywidgets>=8.0.0

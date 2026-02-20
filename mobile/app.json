@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "Road Damage Detector",
+    "slug": "road-damage-detection",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#1a1a2e"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app needs camera access to detect road damage.",
+        "NSLocationWhenInUseUsageDescription": "This app needs location to tag where road damage is found."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#1a1a2e"
+      },
+      "permissions": [
+        "CAMERA",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        { "cameraPermission": "Allow Road Damage Detector to access your camera for real-time road damage detection." }
+      ],
+      [
+        "expo-location",
+        { "locationWhenInUsePermission": "Allow Road Damage Detector to access your location to tag where damage is detected." }
+      ]
+    ]
+  }
+}

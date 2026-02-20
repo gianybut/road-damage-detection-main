@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+env/
+.env
+
+# YOLOv5
+yolov5/
+runs/
+data/images/
+data/labels/
+
+# Uploads
+uploads/
+
+# Models (large files)
+models/*.pt
+
+# Database
+*.db
+
+# OS
+.DS_Store
+Thumbs.db
