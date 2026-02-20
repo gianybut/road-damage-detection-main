@@ -1,15 +1,16 @@
 """
 Download the RDD2022 dataset for training.
-Supports both automatic download from multiple sources and Google Colab integration.
+Supports multiple download methods via kagglehub, Kaggle CLI, and manual download.
 
 Full dataset: https://github.com/sekilab/RoadDamageDetector
-Kaggle dataset: https://www.kaggle.com/datasets/chitholian/road-damage-detection-rdd2022
+Kaggle dataset: https://www.kaggle.com/datasets/aliabdelmenam/rdd-2022
 
-For Google Colab:
-    !python backend/download_dataset.py --colab
-    
-For local Windows/Mac:
-    python backend/download_dataset.py
+Recommended method (all platforms, requires Kaggle account):
+    python backend/download_dataset.py --kagglehub
+
+For Google Colab (simplest):
+    !pip install kagglehub
+    !python backend/download_dataset.py --kagglehub
 """
 
 import os
@@ -88,6 +89,43 @@ def download_from_kaggle_cli(dataset_name="chitholian/road-damage-detection-rdd2
         return None
 
 
+def download_from_kagglehub():
+    """
+    Download dataset using kagglehub (simplest method).
+    Requires: pip install kagglehub
+    No setup needed - uses your Kaggle account automatically.
+    """
+    print("📥 Downloading from Kaggle using kagglehub...")
+    try:
+        import kagglehub
+        
+        # Download latest version of the dataset
+        dataset_path = kagglehub.dataset_download("aliabdelmenam/rdd-2022")
+        print(f"✅ Dataset downloaded to: {dataset_path}")
+        
+        # Organize into backend/data structure
+        for folder in ["images", "labels"]:
+            src = os.path.join(dataset_path, folder)
+            dst = os.path.join(DATA_DIR, folder, "train")
+            
+            if os.path.exists(src):
+                os.makedirs(os.path.dirname(dst), exist_ok=True)
+                # Copy files
+                for item in os.listdir(src):
+                    src_file = os.path.join(src, item)
+                    dst_file = os.path.join(dst, item)
+                    if os.path.isfile(src_file):
+                        os.makedirs(os.path.dirname(dst_file), exist_ok=True)
+                        shutil.copy2(src_file, dst_file)
+                print(f"✅ Organized {folder} to {dst}")
+        
+        return DATA_DIR
+    except Exception as e:
+        print(f"❌ kagglehub download failed: {e}")
+        print("   Install with: pip install kagglehub")
+        return None
+
+
 def download_sample_dataset():
     """
     Download a small sample dataset from Google Drive or similar service.
@@ -163,8 +201,9 @@ def extract_and_organize(dataset_path):
 
 def main():
     parser = argparse.ArgumentParser(description="Download RDD2022 dataset")
+    parser.add_argument("--kagglehub", action="store_true", help="Download using kagglehub (recommended, simplest)")
+    parser.add_argument("--kaggle", action="store_true", help="Download using Kaggle CLI")
     parser.add_argument("--colab", action="store_true", help="Optimize for Google Colab")
-    parser.add_argument("--kaggle", action="store_true", help="Download from Kaggle")
     parser.add_argument("--sample", action="store_true", help="Create sample dataset structure")
     parser.add_argument("--no-yaml", action="store_true", help="Skip YAML creation")
     
@@ -190,8 +229,12 @@ def main():
     setup_directory_structure()
 
     # Handle different download methods
-    if args.kaggle:
-        print("🔧 Using Kaggle download...")
+    if args.kagglehub:
+        print("🔧 Using kagglehub (simplest method)...")
+        download_from_kagglehub()
+    
+    elif args.kaggle:
+        print("🔧 Using Kaggle CLI...")
         dataset_path = download_from_kaggle_cli()
         if dataset_path:
             extract_and_organize(dataset_path)
@@ -199,8 +242,8 @@ def main():
     
     elif args.colab:
         print("🔧 Using Google Colab mode...")
-        print("   • Mount your Google Drive with: from google.colab import drive; drive.mount('/content/drive')")
-        print("   • Place dataset in: /content/drive/MyDrive/road-damage-detection/")
+        print("   • Run in Colab: !pip install kagglehub")
+        print("   • Then: !python backend/download_dataset.py --kagglehub")
         setup_directory_structure()
     
     elif args.sample:
@@ -208,20 +251,22 @@ def main():
         download_sample_dataset()
     
     else:
-        print("🔧 Interactive mode - choose download method:")
+        print("🔧 Download options:")
         print()
-        print("   Option 1: Manually download from GitHub")
-        print("      Go to: https://github.com/sekilab/RoadDamageDetector")
+        print("   ✨ RECOMMENDED (simplest, all platforms):")
+        print("      pip install kagglehub")
+        print("      python backend/download_dataset.py --kagglehub")
         print()
-        print("   Option 2: Use Kaggle CLI (fastest)")
-        print("      pip install kaggle")
-        print("      python backend/download_dataset.py --kaggle")
+        print("   Alternative options:")
+        print("      Option 1: Kaggle CLI")
+        print("         pip install kaggle")
+        print("         python backend/download_dataset.py --kaggle")
         print()
-        print("   Option 3: Google Colab (recommended for training)")
-        print("      python backend/download_dataset.py --colab")
+        print("      Option 2: Manual download from GitHub")
+        print("         https://github.com/sekilab/RoadDamageDetector")
         print()
-        print("   Option 4: Create sample structure only")
-        print("      python backend/download_dataset.py --sample")
+        print("      Option 3: Sample structure (for testing)")
+        print("         python backend/download_dataset.py --sample")
         print()
 
     # Create data.yaml if not skipped
@@ -240,9 +285,11 @@ def main():
     print("      <class_id> <x_center> <y_center> <width> <height>")
     print("      (all values normalized 0-1)")
     print()
-    print("🚀 To start training:")
-    print("   python backend/train.py")
+    print("🚀 To start training in Google Colab:")
+    print("   1. Open training_notebook_colab.ipynb in Google Colab")
+    print("   2. Run all cells (GPU will autodetect)")
     print()
+
 
 
 if __name__ == "__main__":
